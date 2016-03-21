@@ -1,0 +1,27 @@
+<div class = photo_gallery >
+
+  <div class = cover >
+    <%= link_to(image_tag(get_photo_path(@photo_gallery.cover, 'resized'),
+                          class: 'photo_gallery_cover'),
+                photo_gallery_photos_path(@photo_gallery.id)) %>
+  </div>
+
+  <% if current_human == @photo_gallery.human || current_human.admin? %>
+    <div class = "photo_gallery_edit">
+      <%= link_to t(:edit), edit_photo_gallery_path(@photo_gallery.id),
+                            class: "small_link" %>
+    </div>
+
+    <div class = "photo_gallery_delete">
+      <%= link_to t(:delete), photo_gallery_path(@photo_gallery.id),
+                              method: :delete,
+                              data: { confirm: t(:delete_confirmation) },
+                              class: "small_link" %>
+    </div>
+  <% end %>
+
+  <div class = description >
+    <%= @photo_gallery.description %>
+  </div>
+
+</div>

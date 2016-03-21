@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+good_gallery:
+  description: "good gallery"
+  cover: "/test/fixtures/files/cover.png"
+  human: good_man
+
+bad_gallery:
+  description: "bad gallery"
+  cover: "/test/fixtures/files/cover.png"
+  human: bad_man

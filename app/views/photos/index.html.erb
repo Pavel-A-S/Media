@@ -1,0 +1,88 @@
+<div class = "title_block">
+
+  <div class = "title_text_block">
+    <p class = "title_text">
+      <%= @photo_gallery.description %>
+    </p>
+  </div>
+
+  <div class = "title_human_block">
+    <%= link_to "(#{@human.name})", @human, class: "small_link" %>
+    <br>
+    <% if current_human == @human || current_human.admin? %>
+      <%= link_to t(:add_new_photo),
+          new_photo_gallery_photo_path(@photo_gallery.id),
+          class: "small_link" %>
+      <br>
+      <%= link_to t(:add_new_link),
+          new_link_path(@photo_gallery.id),
+          class: "small_link" %>
+    <% end %>
+  </div>
+
+</div>
+
+<div class="numbered">
+  <% will_be_numbered(photo_gallery_photos_path(@photo_gallery.id),
+                      @photos[:pages]) %>
+</div>
+
+<% if @photos[:objects] %>
+  <% @photos[:objects].each do |photo| %>
+    <% if photo.source_type == 'link' %>
+      <div class = "photo_wrapper">
+        <div class = "photo_block">
+          <%= link_to(image_tag(photo.path,
+                                class: "resized_link_photo"),
+                      photo.name) %>
+        </div>
+
+        <div class = "photo_description_ellipsis">
+          <%= photo.description %>
+        </div>
+
+        <% if current_human == photo.photo_gallery.human ||
+                               current_human.admin? %>
+          <div class = "photo_delete">
+            <%= link_to t(:delete), photo_path(photo.id),
+                                    method: :delete,
+                                    data: { confirm: t(:delete_confirmation) },
+                                    class: "small_link" %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class = "photo_wrapper">
+
+        <div class = "photo_block">
+          <%= link_to(image_tag(get_photo_path(photo.id, 'resized'),
+                                class: "resized_photo"),
+                      photo_path(photo.id)) %>
+        </div>
+
+        <div class = "photo_description">
+          <%= photo.name %>
+        </div>
+
+        <% if current_human == photo.photo_gallery.human ||
+                               current_human.admin? %>
+          <div class = "photo_edit">
+            <%= link_to t(:edit), edit_photo_path(photo.id),
+                                  class: "small_link" %>
+          </div>
+
+          <div class = "photo_delete">
+            <%= link_to t(:delete), photo_path(photo.id),
+                                    method: :delete,
+                                    data: { confirm: t(:delete_confirmation) },
+                                    class: "small_link" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+
+<script type="text/javascript">
+  PreLoader("resized_photo");
+</script>

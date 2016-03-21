@@ -1,0 +1,1282 @@
+/* for nesting */
+
+@mixin for_browsers {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+body:before {
+  display: none;
+  content: url("/Default_Cover/forest.png");
+  content: url("/Default_Cover/second_header.png");
+  content: url("/Default_Cover/body.png");
+  content: url("/Default_Cover/header.png");
+  content: url("/Default_Cover/GlassBackgroundWhite40.png");
+  content: url("/Default_Cover/GlassBackgroundPurple30.png");
+  content: url("/Default_Cover/GlassBackgroundPurple10.png");
+}
+
+@mixin super_border($top, $right, $bottom, $left, $type, $color) {
+  border-left: $left $type $color;
+  border-right: $right $type $color;
+  border-top: $top $type $color;
+  border-bottom: $bottom $type $color;
+}
+
+@mixin super_size($height, $width){
+  height: $height;
+  width: $width;
+}
+
+@mixin max_size($height, $width){
+  max-height: $height;
+  max-width: $width;
+  max-device-height: $height;
+  max-device-width: $width;
+}
+
+.rubber{
+  float: left;
+  clear: left;
+  width: 100%;
+}
+
+//------------------------------------ Body ------------------------------------
+
+body {
+  font: 13pt forum;
+  background-image: url("/Default_Cover/body.png");
+  background-size: auto 300px;
+  margin: 0;
+  padding: 0;
+}
+
+//----------------------------------- Header -----------------------------------
+
+header {
+  position: fixed; top: 0; left: 0;
+  z-index: 17;
+  @include super_size(107px, 100%);
+  padding: 0;
+  margin: 0;
+  background-image: url("/Default_Cover/header.png");
+  background-size: auto 85px;
+  background-repeat: repeat-x;
+}
+
+.MainHeader {
+  position: fixed;
+  top: 20px;
+  left: 80px;
+  margin: 0;
+  padding: 0;
+  font: 28px Boomboom;
+  color: white;
+}
+
+.navigation {
+  position: fixed;
+  top: 85px;
+  right: 0px;
+  min-height: 22px;
+  width: 100%;
+  text-align: right;
+  background-image: url("/Default_Cover/second_header.png");
+  background-size: auto 300px;
+  background-repeat: repeat-x;
+}
+
+.navigation_block {
+  display: inline-block;
+}
+
+//------------------------------------------------------------------------------
+
+.language_block {
+  display: inline-block;
+  vertical-align: middle;
+  height: 15px;
+  text-align: center;
+}
+
+.language_cover {
+  float: left;
+  overflow: hidden;
+  &:hover .item {
+    display: block;
+  }
+}
+
+.language_title {
+  display: block;
+  padding: 0px 20px 0px 20px;
+  font: 10pt forum;
+  color: black;
+  margin-bottom: 8px;
+}
+
+.item {
+  display: none;
+  margin: 5px 0px 5px 0px;
+  border: 1px solid #ad9eff;
+  border-radius: 5px;
+  background-image: url("/Default_Cover/second_header.png");
+  background-size: auto 300px;
+  background-repeat: repeat-x;
+}
+
+.submenu_link {
+  display: inline-block;
+  text-decoration: none;
+  font: 10pt forum;
+  color: black;
+  &:link {
+    color: black;
+  }
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    color: white;
+  }    
+}
+
+//-------------------------------- Main Page -----------------------------------
+.MainIconWrapper {
+  display: inline-block;
+  margin: 20px 10px auto;
+  background: transparent;
+}
+
+// Ok
+.MainIcons {
+  @include super_size(150px, 150px);
+}
+
+.MainCoverWrapper {
+  width: auto;
+}
+
+.MainCover {
+  @include super_size(auto, 100%);
+  margin: 5px;
+  animation-name: HomeImage;
+  animation-duration: 4s;
+}
+
+//-------------------------------- information block ---------------------------
+
+.InformationBlock {
+  margin-top: 117px;
+  padding-top: 10px;
+  @include super_size(auto, 100%);
+}
+
+.AlertInformation {
+  font: 14pt forum;
+  color: red;
+  text-align: center;
+}
+
+.CommonInformation {
+  font: 14pt forum;
+  color: green;
+  text-align: center;
+}
+
+//---------------------------------- Wrapper -----------------------------------
+
+.wrapper {
+  overflow: hidden;
+  margin: 0px 15% 35px 15%;
+  @include super_border(0px, 0px, 0px, 0px, solid, white);
+  padding: 10px;
+  text-align: center 
+}
+
+//------------------------------------ Chat ------------------------------------
+
+.ChatWrapper {
+  @include for_browsers;
+  overflow: auto;
+  @include super_size(auto, 100%);
+  border: 2px solid #ad9eff;
+  border-radius: 10px;
+  background-image: url("/Default_Cover/GlassBackgroundWhite40.png");
+  background-size: 300px auto;
+}
+
+.ChatMessagesBlock {
+  @include for_browsers;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.ChatHumanBlock {
+  @include for_browsers;
+  float: left;
+  clear: left;
+  @include super_size(auto, 170px); // fixed size
+}
+
+.ChatAvatarBlock {
+  @include for_browsers;
+  float: left;
+  margin-left: 5px;
+  @include super_size(52px, 52px); // fixed size
+}
+
+.ChatAvatar {
+  @include max_size(50px, 50px);
+}
+
+.ChatInformationBlock {
+  @include for_browsers;
+  overflow: hidden;
+  margin-left: 60px;               // fixed margin
+}
+
+.ChatNameBlock {
+  @include for_browsers;
+  font: 13pt forum;
+  margin: 5px auto;
+  width: 100%;
+}
+
+.ChatDateBlock {
+  @include for_browsers;
+  font: 10pt forum;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.ChatTextBlock {
+  @include for_browsers;
+  margin: 5px 5px 5px 185px;      // fixed margin
+  text-align: left;
+  font: 14pt forum;
+  word-wrap: break-word;
+}
+
+//----------------------------------- Text -------------------------------------
+
+.SiteDescriptionBlock {
+}
+
+.SiteDescription {
+  font: 12pt forum;
+}
+
+.RememberMeText {
+  display: inline-block;
+  vertical-align: middle;
+  font: 14pt forum;
+  margin-left: 15px;
+}
+
+.QuestionPhoto {
+  border: 1px solid #ad9eff;
+  @include max_size(400px, 400px);
+}
+
+.QuestionPhotoAlign {
+  overflow: hidden;
+  margin: 25px auto;
+}
+
+
+//---------------------------------- for links ---------------------------------
+
+.header_link {
+  display: inline-block;
+  vertical-align: middle;
+  text-decoration: none;
+  margin: 0px 20px 0px 20px;
+  font: 10pt forum;
+  color: black;
+  &:link {
+    color: black;
+  }
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    color: white;
+  }    
+}
+
+// Ok
+.title_link {
+  text-decoration: none;
+  font: 15pt forum;
+  color: black;
+  &:link {
+    color: black;
+  }
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    color: #8b00ff;
+  } 
+}
+
+// Ok
+.title_link_small {
+  text-decoration: none;
+  font: 10pt forum;
+  color: black;
+  &:link {
+    color: black;
+  }
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    color: #8b00ff;
+  } 
+}
+
+// Ok
+.small_link {
+  text-decoration: none;
+  font: 10pt forum;
+  color: black;
+  &:link {
+    color: black;
+  }
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    color: #8b00ff;
+  } 
+}
+
+//-------------------------------- for numbering -------------------------------
+
+.current_page {
+  display: inline-block;
+  vertical-align: middle;
+  font: 12pt forum;
+  color: red;
+  text-decoration: none;
+  margin: 3px 10px 0px 10px;
+  &:link {
+    color: red;
+  }
+  &:visited {
+    color: red;
+  }
+  &:hover {
+    color: #8b00ff;
+  }    
+}
+
+.numbered_link {
+  display: inline-block;
+  vertical-align: middle;
+  text-decoration: none;
+  margin: 3px 10px 0px 10px;
+  font: 12pt forum;
+  color: black;
+  &:link {
+    color: black;
+  }
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    color: #8b00ff;
+  }  
+}
+
+.numbered_previous_link {
+  display: inline-block;
+  vertical-align: middle;
+  text-decoration: none;
+  margin: 3px 10px 0px 10px;
+  outline: none;
+  @include super_size(20px, 20px);
+  background: transparent;
+  background-image: url("/Default_Cover/left_arrow.png");
+  background-size: 20px 20px;
+}
+
+.numbered_next_link {
+  display: inline-block;
+  vertical-align: middle;
+  text-decoration: none;
+  margin: 3px 10px 0px 10px;
+  outline: none;
+  @include super_size(20px, 20px);
+  background: transparent;
+  background-image: url("/Default_Cover/right_arrow.png");
+  background-size: 20px 20px;
+}
+
+.numbered {
+  margin-top: 10px;
+  border: 1px solid #ad9eff;
+  border-radius: 10px;
+  height: 25px;
+  background-image: url("/Default_Cover/GlassBackgroundPurple30.png");
+  background-size: auto 25px;
+  background-repeat: repeat-x;
+}
+
+//--------------------------------- for forms ---------------------------------- 
+
+.plain_form {
+  overflow: hidden;
+  padding: 10px 10px 30px 10px;
+  text-align: center;
+  font: 13pt forum;
+  max-width: 600px;
+  margin: 15px auto;
+  border-radius: 20px;
+  border: 2px solid white;
+}
+
+// OK
+.label {
+  display: inline-block;
+  @include for_browsers;
+  height: 25px;
+  margin: 15px 0px 0px 0px;
+  border: 0px;
+  padding: 3px;
+  font: 12pt forum;
+}
+
+.password_label {
+  @include for_browsers;
+  font: 12pt forum;
+}
+
+// OK
+.password_restore_link {
+  text-decoration: none;
+  font: 8pt forum;
+  color: black;
+  &:link {
+    color: black;
+  }
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    color: #8b00ff;
+  } 
+}
+
+// OK
+.button_submit {
+  @extend .rubber;
+  margin-top: 30px;
+  @include super_size(45px, 100%);
+  border: 2px solid white;
+  border-radius: 10px;
+  font: 13pt forum;
+  color: white;
+  outline: none;
+  background: #ad9eff;
+}
+
+// OK
+.button_submit_for_checkbox {
+  @extend .rubber;
+  margin-top: 10px;
+  @include super_size(45px, 100%);
+  border: 2px solid white;
+  border-radius: 10px;
+  font: 13pt forum;
+  color: white;
+  outline: none;
+  background: #ad9eff;
+}
+
+// OK
+.checkbox {
+  display: none;
+}
+
+.checkbox_label {
+  overflow: auto;
+  float: left;
+  margin: 10px 0px 0px 5px;
+}
+
+.checkbox_image {
+  border: 2px solid white;
+  border-radius: 9px;
+  display: inline-block;
+  vertical-align: middle;
+  @include super_size(35px, 35px);
+  background-image: url("/Default_Cover/checkbox.png");
+  background-size: 35px 35px;
+}
+
+.checkbox:checked + label .checkbox_image {
+  background-image: url("/Default_Cover/checkbox_checked.png");
+}
+
+.checkbox_text {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 15px;
+  font: 12pt forum;
+}
+
+// OK
+.text_field {
+  @include for_browsers;
+  text-align: center;
+  width: 100%;
+  height: 35px;
+  border: 2px solid white;
+  margin: 0px;
+  outline: none;
+  border-radius: 8px;
+  background: #ccc2ff;
+}
+
+// alert message
+.field_with_errors {
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    label {
+      color:red;
+    }
+    input {
+      border: 2px solid red;
+      background: #ffc0cb;  
+    }
+  }
+
+// OK
+.block_for_errors {
+  padding: 10px 5px 10px 0px;
+  margin: 0px 0px 20px 0px;
+  border: 2px dashed red;
+  font: 12pt forum;
+  color: red;
+  ul {
+    text-align: left;
+    list-style-type: circle;
+    margin: 5px;
+  }
+}
+
+//--------------------------- for photo galleries ----------------------------OK
+.photo_gallery_wrapper {
+  display: inline-block;
+  overflow: hidden;
+  @include for_browsers;
+  padding: 0px;
+  margin: 20px 10px auto;
+  @include super_size(260px, 220px); // fixed form
+  border-radius: 10px;
+  border: 1px solid #ad9eff;
+  background-image: url("/Default_Cover/GlassBackgroundPurple30.png");
+  background-size: 300px auto;
+}
+
+.photo_gallery_cover_block {
+  @include for_browsers;
+  margin: 5px auto 0px auto;
+  min-height: 130px;
+}
+
+.photo_gallery_cover {
+  margin-top: 10px;
+  @include max_size(170px, 200px); // photo cover
+  animation-name: JustPhoto;
+  animation-duration: 3s;
+}
+
+
+.photo_gallery_description_block {
+}
+
+.photo_gallery_description {
+  margin: auto;
+  font: 13pt forum;
+  color: black;
+}
+
+.photo_gallery_edit {
+  margin: auto;
+  font: 10pt forum;
+}
+
+.photo_gallery_delete {
+  margin: auto;
+  font: 10pt forum;
+}
+
+//------------------------------- for photos ---------------------------------OK
+
+// for edit action
+.photo_form {
+  overflow: hidden;
+  border: 5px solid white;
+  padding: 10px 10px 10px 10px;
+  text-align: center;
+  font: 13pt forum;
+  height: 500px;
+}
+
+// for show and edit actions
+
+.photo_center_align {
+  overflow: hidden;
+  @include max_size(auto, auto);
+  margin: 0px auto;
+}
+
+// OK
+.photo_wrapper {
+  display: inline-block;
+  overflow: hidden;
+  @include for_browsers;
+  padding: 0px;
+  margin: 20px 10px auto;
+  @include super_size(360px, 320px);  //fixed form
+  border: 1px solid #ad9eff;
+  border-radius: 15px;
+  background-image: url("/Default_Cover/GlassBackgroundPurple30.png");
+  background-size: 300px auto;
+}
+
+// Ok
+.photo_block {
+  @include for_browsers;
+  margin: 5px auto 0px auto;
+  padding-top: 15px;
+  min-height: 180px;
+}
+
+// Ok
+.resized_photo {
+  @include max_size(300px, 300px);  //photo for cover
+  animation-name: JustPhoto;
+  animation-duration: 3s;
+}
+
+// Ok
+.resized_link_photo {
+  @include max_size(250px, 250px);  //photo for cover
+  animation-name: JustPhoto;
+  animation-duration: 3s;
+}
+
+// Ok
+.full_photo {
+  @include max_size(auto, 100%);
+}
+
+// Ok
+.middle_photo {
+  @include max_size(400px, 400px);
+}
+
+// Ok
+.photo_description {
+  word-wrap: break-word;
+}
+
+// Ok
+.photo_description_ellipsis {
+  margin: auto;
+  width: 90%;
+  word-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// Ok
+.photo_edit {
+  margin: auto;
+  font: 10pt forum;
+}
+
+// Ok
+.photo_delete {
+  margin: auto;
+  font: 10pt forum;
+}
+
+.picture_rotation_block {
+  width: 100%;
+  margin: auto;
+  @include for_browsers;
+}
+
+//-------------------------------- for titles ----------------------------------
+
+// Ok
+.title_block {
+  display: inline-block;
+  margin: 10px 0px 20px 0px;
+}
+
+// Ok
+.title_human_block {
+  float: left;
+  width: 100%;
+  font: 10pt forum;
+  padding: 0px;
+  margin: 0px;
+}
+
+// Ok
+.title_text {
+  font: 18pt forum;
+  padding: 0px;
+  margin: 0px;
+  color: black;
+}
+
+// Ok
+.title_text_block {
+  float: left;
+  width: 100%;
+}
+
+//--------------------------------- for comments -------------------------------
+
+// OK
+.comment_label {
+  @include for_browsers;
+  float: left;
+  width: 100%;
+  height: 25px;
+  margin: 10px 0px 10px 0px;
+  border: 0px;
+  padding: 3px;
+}
+
+// OK
+.comment_form {
+  overflow: hidden;
+  border: 2px solid #ad9eff;
+  border-radius: 15px;
+  padding: 10px 10px 10px 10px;
+  text-align: center;
+  font: 13pt forum;
+  max-width: 510px;
+  width: auto;//510px;
+  margin: 30px auto;
+  background-image: url("/Default_Cover/GlassBackgroundPurple10.png");
+  background-size: 300px auto;
+}
+
+// OK
+.comment_button_submit {
+  float: right;
+  margin-top: 0px;
+  @include super_size(100px, 100px);
+  border: 2px solid white;
+  border-radius: 10px;
+  font: 13pt forum;
+  color: white;
+  background: #91b3f2;
+}
+
+// OK
+.comment_text_area_wrapper {
+  @include for_browsers;
+  overflow: hidden;
+  border: 1px solid #ad9eff;
+  margin: 0px 110px 0px 0px;
+  @include super_size(102px, auto);
+}
+
+// OK
+.comment_text_area {
+  @include for_browsers;
+  @include super_size(100px, 100%);
+  border: 1px solid #ad9eff;
+  outline: none;
+  margin: 0px;
+  overflow: auto;
+  background: transparent;
+  background-image: url("/Default_Cover/GlassBackgroundWhite40.png");
+  background-size: 300px auto;
+}
+
+// OK
+.comments_center_align {
+  width: 100%;
+  margin: 20px 0px 0px 0px;
+  overflow: auto;
+  border: 1px solid #ad9eff;
+  border-radius: 10px;
+  background-image: url("/Default_Cover/GlassBackgroundWhite40.png");
+  background-size: 300px auto;
+
+}
+
+// OK
+.comments_human_block {
+  float: left;
+  width: 225px;
+  height: 225px;
+  margin: 0px;
+  padding: 15px 0px 10px 0px;
+
+}
+
+// OK
+.comments_text_block {
+  margin-left: 228px;
+  padding: 20px;
+}
+
+.comments_avatar_block {
+  margin: auto;
+  @include super_size(150px, 150px);
+}
+
+.comments_avatar {
+  @include max_size(150px, 150px);
+}
+
+/*.human_name {
+}*/
+
+.comments_date {
+  font: 12pt forum;
+}
+
+.comments_delete {
+  font: 12pt forum;
+}
+
+.comments_text {
+  font: 12pt forum;
+  word-wrap: break-word;
+  text-align: left;
+}
+
+//------------------------------- for humans index -----------------------------
+
+// Ok
+.human_center_align {
+  display: inline-block;
+}
+
+.human_wrapper {
+  display: inline-block;
+  overflow: hidden;
+  @include super_size(250px, 250px);
+  margin: 20px 10px auto;
+  border: 1px solid #ad9eff;
+  background-image: url("/Default_Cover/GlassBackgroundPurple30.png");
+  background-size: 300px auto;
+  border-radius: 25px;
+}
+
+// Ok
+.human_avatar_block {
+  margin: auto;
+  margin-top: 25px;
+  min-height: 100px;
+}
+
+// Ok
+.human_avatar {
+  @include max_size(150px, 150px);
+  animation-name: JustPhoto;
+  animation-duration: 3s;
+}
+
+// Ok
+.human_name_block {
+  margin: auto;
+}
+
+// Ok
+.human_name {
+  font: 12pt forum;
+  margin: 0px;
+}
+
+// Ok
+.human_edit {
+  margin: auto;
+  font: 10pt forum;
+}
+
+// Ok
+.human_delete {
+  margin: auto;
+  font: 10pt forum;
+}
+
+//-------------------------------- for humans form -----------------------------
+
+// OK
+.avatar_block {
+  max-width: 500px;
+  margin: 15px auto;
+  text-align: left;
+  padding: 10px 0px 0px 0px;
+}
+
+// OK
+.avatar_photo_block {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0px 0px 0px 10px;
+}
+
+// OK
+.avatar_photo {
+  display: inline-block;
+  vertical-align: middle;
+  @include max_size(200px, 200px);
+}
+
+// OK
+.avatar_rotation_block {
+  display: inline-block;
+  vertical-align: middle;
+  width: 250px;
+  margin: 0px 0px 0px 35px;
+}
+
+// OK
+.radio_button {
+  display: none;
+}
+
+// OK
+.radio_button_label {
+  display: inline-block;
+  vertical-align: middle;
+  @include super_size(20px, 250px);
+  margin: 10px 0px 0px 0px;
+  text-align: left;
+}
+
+.radio_button_image {
+  display: inline-block;
+  vertical-align: middle;
+  @include super_size(15px, 15px);
+  border: 3px solid white;
+  border-radius: 15px;
+  background-image: url("/Default_Cover/radio_button.png");
+  background-size: 15px 15px;
+}
+
+.radio_button:checked + label .radio_button_image {
+  background-image: url("/Default_Cover/radio_button_selected.png");
+}
+
+.radio_button_text {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px;
+  font: 12pt forum;
+}
+
+// OK
+.upload_label {
+  display: inline-block;
+  width: 100%;
+  margin: 10px 0px 0px 10px;
+  text-align: left;
+  font: 12pt forum;
+}
+
+// OK
+.upload_field {
+  width: 100%;
+  display: inline-block;
+  margin: 3px 0px 0px 10px;
+  text-align: left;
+}
+
+//------------------------ for photo upload (JavaScript) -----------------------
+
+.upload_block {
+  overflow: hidden;
+  margin: 40px auto;
+  border: 2px solid #ad9eff;
+  border-radius: 10px;
+}
+
+.upload_picture_block {
+  float: left;
+  clear: left;
+  width: 224px;
+  margin: 20px 0px 0px 0px;
+  padding: 0px;
+}
+
+.upload_picture {
+  margin: 5px auto;
+  @include max_size(200px, 200px);
+}
+
+.upload_InProgress {
+  display: inline-block;
+  margin: 5px auto;
+  @include super_size(200px, 200px);
+  background: transparent;
+  background-image: url("/Default_Cover/forest.png");
+  background-size: 200px 200px;
+}
+
+.upload_InProgress_text {
+  display: inline-block;
+  padding: 25px;
+  font: 12pt forum;
+}
+
+.upload_picture_rotation_block {
+  float: left;
+  clear: left;
+  width: 210px;
+  margin: 0px 0px 35px 8px;
+}
+
+.delete_button {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px 0px 0px 0px;
+  border: 0px;
+  width: 30px;
+  height: 30px;
+  outline: none;
+  background: transparent;
+  background-image: url("/Default_Cover/delete_button.png");
+  background-size: 30px 30px;
+  cursor: pointer;
+}
+
+.rotation_button_left {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px 15px 0px 0px;
+  border: 0px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  outline: none;
+  background-image: url("/Default_Cover/rotation_left.png");
+  background-size: 40px 40px;
+  cursor: pointer;
+}
+
+.rotation_button_left:active {
+  background-image: url("/Default_Cover/rotation_left_rotated.png");
+}
+
+.rotation_button_right:active {
+  background-image: url("/Default_Cover/rotation_right_rotated.png");
+}
+
+.rotation_button_right {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px 0px 0px 15px;
+  border: 0px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  outline: none;
+  background-image: url("/Default_Cover/rotation_right.png");
+  background-size: 40px 40px;
+  cursor: pointer;
+}
+
+.upload_picture_information_block {
+  @include for_browsers;
+  margin-left: 228px;
+  margin-top: 25px;
+}
+
+.upload_picture_information {
+  margin: 0px;
+  font: 12pt forum;
+}
+
+.upload_picture_errors {
+  margin: 0px;
+  font: 12pt forum;
+  color: red;  
+}
+
+.upload_picture_text_area_block {
+  margin-left: 228px;
+  padding: 10px 20px 20px 20px;
+}
+
+.upload_picture_text_area {
+  @include for_browsers;
+  @include super_size(100px, 100%);
+  border: 1px solid #ad9eff;
+  outline: none;
+  background: transparent;
+  background-image: url("/Default_Cover/GlassBackgroundWhite40.png");
+  background-size: 300px auto;
+}
+
+.upload_picture_button {
+  margin: 20px 0px 50px 0px;
+  @include super_size(35px, 100%);
+  border: 2px solid white;
+  border-radius: 10px;
+  font: 13pt forum;
+  color: white;
+  background: #91b3f2;
+  outline: none;
+}
+
+//------------------------------ For Progress Bar ------------------------------
+
+// Should be changed
+#ForProgressBar {
+  @include for_browsers;
+  width: 100%;
+  height: 100%;
+}
+
+// Ok
+.Progress_bar {
+  @include for_browsers;
+  min-height: 200px;
+  margin: 25px;
+  padding: 25px;
+  border: 2px solid #ad9eff;
+  border-radius: 15px;
+}
+
+.Progress_Information {
+  margin-top: 25px;
+  font: 12pt forum;
+}
+
+// Ok
+.Progress_block {
+  position: relative;
+  margin-top: 25px;
+  @include for_browsers;
+  @include super_size(24px, 100%);
+  border: 2px solid #ad9eff;
+  border-radius: 10px;
+  z-index: -2;
+}
+
+// Ok
+.Progress {
+  position: absolute;
+  top: 0px;
+  @include for_browsers;
+  @include super_size(20px, 0%);
+  z-index: -3;
+  border-radius: 10px;
+  background: white;
+}
+
+// Ok
+.Progress_status {
+  position: absolute;
+  top: 0px;
+  z-index: -2;
+  padding: 2px;
+  font: 11pt forum;
+  @include super_size(20px, 100%)
+}
+
+//-------------------------------- Footer --------------------------------------
+
+footer {
+  position: fixed; bottom: 0; left: 0;
+  @include super_size(35px, 100%);
+  text-align: center;
+  padding-top: 0px;
+  border-top: 1px solid #ad9eff;
+  color: black;
+  background-image: url("/Default_Cover/footer.png");
+  background-size: auto 35px;
+}
+
+.FooterText {
+  font: 10pt forum;
+  margin-top: 10px;
+  color: white;
+}
+
+//--------------------------------- For debugging ------------------------------
+
+/* For debug 
+.debug {
+  @extend .rubber;
+  width: 100%;
+  overflow: auto;
+  border: 1px solid black;
+  text-align: left;
+  margin-top: 350px;
+}
+*/
+
+.Overlay {
+  position: fixed; bottom: 0; top: 0; left: 0; right: 0;
+  animation-name: MainOverlay;
+  animation-duration: 2s;
+  z-index: -50;
+}
+
+
+@keyframes MainOverlay {
+  from {
+  position: fixed;
+  opacity: 1;
+  z-index: 50;
+  background: white;
+  }
+  to {
+  position: fixed;
+  opacity: 0;
+  z-index: 50;
+  background: white;
+  }
+}
+
+@keyframes HomeImage {
+  from {
+  position: relative;
+  opacity: 0;
+  z-index: -3;
+  }
+  to {
+  position: relative;
+  opacity: 1;
+  z-index: -3;
+  }
+}
+
+@keyframes JustPhoto {
+  from {
+  position: relative;
+  opacity: 0;
+  z-index: -3;
+  }
+  to {
+  position: relative;
+  opacity: 1;
+  z-index: -3;
+  }
+}

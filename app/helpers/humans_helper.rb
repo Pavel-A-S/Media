@@ -1,0 +1,3 @@
+# HumansHelper
+module HumansHelper
+end

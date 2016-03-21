@@ -1,0 +1,20 @@
+<%= form_for(:permission,
+             url: photo_gallery_permissions_path(@photo_gallery.id)
+             ) do |f| %>
+  <%= f.label :human_id, t(:permission), class: "label" %>
+  <%= f.collection_select :human_id, Human.order(:name),:id,:name, include_blank: true %>
+
+  <%= f.submit t(:grant), class: "button_submit" %>
+
+<% end %>
+
+<br><br><br><br><br>
+
+<% @photo_gallery.permissions.each do |permission| %>
+  <div class = "photo_gallery_delete">
+    <%= link_to "#{t(:delete_access)} #{permission.human.name}", permission_path(permission.id),
+                            method: :delete,
+                            data: { confirm: t(:delete_confirmation) },
+                            class: "small_link" %>
+  </div>
+<% end %>

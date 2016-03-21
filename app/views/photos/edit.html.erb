@@ -1,0 +1,60 @@
+<div class = "photo_center_align">
+
+  <%= image_tag get_photo_path(@photo.id, 'full'),
+                class: "middle_photo", id: "middle_photo" %>
+
+  <div class = "picture_rotation_block">
+
+    <button class = "rotation_button_left" id = "rotation_left">
+    </button>
+
+    <button class = "rotation_button_right" id = "rotation_right">
+    </button>
+
+  </div>
+
+</div>
+
+<%= form_for(:photo, url: photo_path(@photo.id),
+                     method: :patch,
+                     html: {class: "plain_form"} ) do |f| %>
+
+  <%= render partial: 'shared/form_errors', locals: { object: @photo } %>
+
+  <%= f.label :name, t(:photo_name), class: "label" %>
+  <%= f.text_field :name, class: "text_field" %>
+
+  <%= check_box_tag :make_me_cover, value = "1", checked = false,
+                                                 class: "checkbox" %>
+
+  <%= label_tag :make_me_cover, class: "checkbox_label" do %>
+    <div class = 'checkbox_image'>
+    </div>
+    <div class = 'checkbox_text'>
+      <%= t(:make_me_cover) %>
+    </div>
+  <% end %>
+
+  <%= f.submit t(:save), class: "button_submit_for_checkbox" %>
+
+<% end %>
+
+<script type="text/javascript">
+
+  RotationListener("rotation_left",
+                   "middle_photo",
+                   <%= @photo.id %>,
+                   "left",
+                   '<%= t(:rotation) %>',
+                   '<%= form_authenticity_token %>',
+                   '<%= I18n.locale %>');
+
+  RotationListener("rotation_right",
+                   "middle_photo",
+                   <%= @photo.id %>,
+                   "right",
+                   '<%= t(:rotation) %>',
+                   '<%= form_authenticity_token %>',
+                   '<%= I18n.locale %>');
+
+</script>

@@ -1,0 +1,24 @@
+<% object.reverse_each do |message| %>
+  <div class = 'ChatMessagesBlock' id = <%= message.id %> >
+    <div class = 'ChatHumanBlock'>
+      <div class = 'ChatAvatarBlock'>
+        <%= link_to(image_tag(avatar_path(message.human.id),
+                    class: 'ChatAvatar'),
+                    human_path(message.human_id)) %>
+      </div>
+      <div class = 'ChatInformationBlock'>
+        <div class = 'ChatNameBlock'>
+          <%= message.human.name %>
+        </div>
+        <div class = 'ChatDateBlock'>
+          <%= message.created_at.localtime.strftime("%H:%M:%S") %>
+          <%= message.created_at.localtime.strftime("%d.%m.%Y") %>
+        </div>
+      </div>
+    </div>
+
+    <div class = 'ChatTextBlock'>
+      <%= message.text %>
+    </div>
+  </div>
+<% end %>

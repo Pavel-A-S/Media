@@ -1,0 +1,6 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+good_comment:
+  text: "Hi!"
+  human: good_man
+  photo: good_photo

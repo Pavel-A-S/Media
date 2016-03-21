@@ -1,0 +1,3 @@
+# PhotoGalleriesHelper
+module PhotoGalleriesHelper
+end

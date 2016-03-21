@@ -1,0 +1,93 @@
+<div class = 'ChatWrapper' id = 'ChatWrapperId'>
+  <%= render partial: 'messages', locals: { object: @messages } %>
+</div>
+
+<%= form_for(@message, html: { class: "comment_form" }) do |f| %>
+
+  <%= f.label :text, t(:write_your_message_here), class: "comment_label" %>
+
+  <%= f.submit t(:send), type: "button", class: "comment_button_submit",
+                                         id: "ChatButton" %>
+
+  <div class = "comment_text_area_wrapper">
+    <%= f.text_area :text, class: "comment_text_area" %>
+  </div>
+
+<% end %>
+
+<a name='bottom'> </a>
+
+<script type='text/javascript'>
+
+  var input = document.getElementById('chat_text');
+  var chatButton = document.getElementById('ChatButton');
+  var chat = document.getElementById('ChatWrapperId');
+  var chatList = chat.children;
+  var flash = document.getElementById('InformationBlock');
+
+  // This function lives in assets
+  EnterSubmitChat();
+
+  chatButton.onclick = function() {
+    SendForm(input);
+  }
+
+  var repeater = setInterval(function() {
+    if(window.location.pathname != "<%= chats_path %>") {
+      clearInterval(repeater);    
+    }
+    if (chatList.length > 0) {
+      var currentId = chatList[chatList.length-1].id;
+    } else {
+      var currentId = "none";
+    }
+    Checker(currentId);
+  }, 1000);
+
+  function SendForm(input) {
+    var form = new FormData();
+    form.append('chat[text]', input.value);
+    input.value = "";
+
+    //Send request
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "<%= chats_path %>", true);
+    xhr.setRequestHeader('X-CSRF-Token', '<%= form_authenticity_token %>');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.send(form);
+    xhr.onload = function() {
+      var responseData = JSON.parse(this.responseText);
+      if (responseData.status == "errors") {
+        flash.innerHTML = '';
+        window.location = window.location.pathname + "#";
+        for (var i=0; i<responseData.errors.length; i++) {
+          var div = document.createElement("div");
+          var alert = document.createTextNode(responseData.errors[i]);
+          div.className = 'AlertInformation';
+          div.appendChild(alert);
+          flash.appendChild(div);
+        } 
+      } else if (responseData.status == "Ok") {
+        input.value = '';
+        flash.innerHTML = '';
+        window.location = window.location.pathname + "#bottom";
+      }
+    }
+  }
+
+  function Checker(id) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("get", "<%= chats_path %>" + "/" + id, true);
+    xhr.setRequestHeader('X-CSRF-Token', '<%= form_authenticity_token %>');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.send();
+    xhr.onload = function() {
+      var responseData = JSON.parse(this.responseText);
+      if (responseData.status == "Refresh") {
+        chat.innerHTML = responseData.data;
+        window.location = window.location.pathname + "#bottom";
+      }
+    }
+  }
+
+</script>

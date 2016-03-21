@@ -1,0 +1,337 @@
+<%= form_for(:uploading, url: photo_gallery_photos_path(@photo_gallery.id),
+             remote: true,
+             html: { multipart: true, id: "Upload_Form", class: "plain_form" }
+            ) do |f| %>
+
+  <%= f.label :files, t(:upload_files) %>
+  <%= f.file_field :files, id: "uploading_files", multiple: true %>
+
+  <%= f.submit t(:upload), type: "submit", id: "button_submit_plain",
+                                           class: "button_submit" %>
+
+<% end %>
+
+<div id="ForProgressBar">
+</div>
+
+<script type="text/javascript">
+
+
+  var button = document.createElement("button");
+  var photos = "";
+  var xhrResponse = [];
+
+//----------------------- Good button for good browsers ------------------------
+
+
+  if (window.navigator.userAgent.indexOf("MSIE") < 0) {
+
+    var buttonPlain = document.getElementById("button_submit_plain");
+    var buttonForGoodBrowsers = document.createElement("button");
+    var uploadForm = document.getElementById("Upload_Form");
+
+    buttonPlain.parentNode.removeChild(buttonPlain);
+    buttonForGoodBrowsers.className = "button_submit";
+    buttonForGoodBrowsers.id = "Upload_Button";
+    buttonForGoodBrowsers.type = "button";
+    buttonForGoodBrowsers.innerHTML = "<%= t(:upload) %>";
+    uploadForm.appendChild(buttonForGoodBrowsers);
+    var uploadButton = document.getElementById("Upload_Button");
+  }
+
+
+//----------------------------- Main Functions ---------------------------------
+
+
+
+  if (uploadButton) {
+
+    //If button is clicked
+    uploadButton.onclick = function() {
+
+      //Uploading files
+      var xhr = new XMLHttpRequest();
+      UploadFiles("uploading_files", "ForProgressBar", "Upload_Form", xhr);
+
+      xhr.onload = function() {
+
+        //Getting data from server
+        photos = JSON.parse(this.responseText);
+      
+        //Creating form for photos
+        photos = CreatePhotoForm(photos, "ForProgressBar", button);
+
+        //Adding listeners for rotation buttons
+        for (var i=0; i<photos.length; i++) {
+          i2 = photos[i]['id'];
+
+          RotationListener("rotation_left_id_" + i2, 
+                           "photo_id_" + i2, 
+                           i2, 
+                           "left");
+
+          RotationListener("rotation_right_id_" + i2, 
+                           "photo_id_" + i2, 
+                           i2, 
+                           "right");
+          DeleteListener("delete_id_" + i2, 
+                           "upload_block_id_" + i2, 
+                           photos[i],
+                           photos);
+        }
+      }
+    }
+  }
+
+  //If button is clicked sending data to server
+  button.onclick = function() {
+
+    //Hide button
+    button.parentNode.removeChild(button);
+
+    //Sending filled form
+    SendFilledForms(photos, xhrResponse);
+
+    //Getting answer from server
+    var CheckResponse = setInterval(function() {
+      if (xhrResponse.length == photos.length) {
+        clearInterval(CheckResponse);
+        var i2=0;
+        for (var i=0; i<xhrResponse.length; i++) {
+          if (xhrResponse[i].status == "OK") {
+            i2++;
+          }
+        }
+        //If no errors - redirect to photo gallery else return a button
+        if (i2==xhrResponse.length) {
+          window.location = "<%=photo_gallery_photos_path(@photo_gallery.id)%>";
+        }
+        else {
+          document.getElementById("ForProgressBar").appendChild(button);
+          xhrResponse = [];
+        }
+      }
+    }, 1000);
+  }
+
+//------------------------------- Functions ------------------------------------
+
+  function DeleteListener(buttonId, blockId, object, photos) {
+    document.getElementById(buttonId).onclick = function () {
+      var xhr = new XMLHttpRequest();
+      xhr.open("delete", "/<%= I18n.locale %>/photos/" + object['id'], true);
+      xhr.setRequestHeader('X-CSRF-Token', '<%= form_authenticity_token %>');
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.send();
+      xhr.onload = function() {
+        var data = JSON.parse(this.responseText);
+        if (data.status == "OK") {
+          //deleting block
+          var block = document.getElementById(blockId);
+          block.parentNode.removeChild(block);
+          photos.splice(photos.indexOf(object), 1);
+        }
+      }
+    }
+  }
+
+  function RotationListener(buttonId, photoId, objectId, direction) {
+    document.getElementById(buttonId).onclick = function () {
+      var photo =  document.getElementById(photoId);
+      if (photo) {
+        var xhr = new XMLHttpRequest();
+        var  form = new FormData();
+
+        //Temporary photo while rotation
+        var photoParentNode = photo.parentNode;
+        var temporaryItem = document.createElement("div");
+        temporaryItem.className = "upload_InProgress";
+        temporaryItem.innerHTML = "<div class = 'upload_InProgress_text'>" +
+                                  "<%= t(:rotation) %>" +
+                                  "</div>";
+        photo.parentNode.removeChild(photo);
+        photoParentNode.appendChild(temporaryItem);
+
+        form.append("rotation", direction);
+        xhr.open("PATCH", "/<%= I18n.locale %>/photos/" + objectId, true);
+        xhr.setRequestHeader('X-CSRF-Token', '<%= form_authenticity_token %>');
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.send(form);
+        xhr.onload = function() {
+          temporaryItem.parentNode.removeChild(temporaryItem);
+          photoParentNode.appendChild(photo);
+          photo.src = photo.src + "?" + new Date().getTime();
+        }
+      }
+    }
+  }
+
+  function UploadFiles(inputId, outputPlace, formForHiding, xhr) {
+
+    var input = document.getElementById(inputId);
+    if (input.files.length != 0) {
+      var output = document.getElementById(outputPlace);
+      var form = new FormData();
+
+      //Creating Progress bar
+      var divProgressBar = document.createElement("div");
+      divProgressBar.className = "Progress_bar";
+      var divInformationBlock = document.createElement("div");
+      divInformationBlock.className = "Progress_Information";
+      var divProgressBlock = document.createElement("div");
+      divProgressBlock.className = "Progress_block";
+      var divProgress = document.createElement("div");
+      divProgress.className = "Progress";
+      var divProgressStatus = document.createElement("div");
+      divProgressStatus.className = "Progress_status";
+      output.appendChild(divProgressBar);
+      divProgressBar.appendChild(divInformationBlock);
+      divProgressBar.appendChild(divProgressBlock);
+      divProgressBlock.appendChild(divProgressStatus);
+      divProgressBlock.appendChild(divProgress);
+
+      //Selecting data from html form to xhr form for sending
+      for (var i=0; i<input.files.length; i++) {
+        form.append('uploading[files][]', input.files[i]);
+      }
+
+      //Hide HTML form
+      var uploadForm = document.getElementById(formForHiding);
+      uploadForm.parentNode.removeChild(uploadForm);
+
+      //Progress information
+      divInformationBlock.innerHTML = "<%= t(:upload_progress) %>";
+
+      //While uploading
+      xhr.upload.onprogress = function(event) {
+        divProgressStatus.innerHTML = Math.round(event.loaded/event.total*100) +
+                                      "%";
+        divProgress.style.width = event.loaded/event.total*100 + "%";
+      }
+
+      //When upload is finished
+      xhr.upload.onload = function(event) {
+        divInformationBlock.innerHTML = "<%= t(:uploading_complete) %>";
+        divProgressStatus.innerHTML = Math.round(event.loaded/event.total*100) +
+                                      '%';
+        divProgress.style.width = event.loaded/event.total*100 + "%";
+      }
+
+      //If errors
+      xhr.upload.onerror = function() {
+        divProgressStatus.innerHTML = "<%= t(:uploading_problem) %>";
+      }
+
+      //Send request
+      xhr.open("POST", "<%=photo_gallery_photos_path(@photo_gallery.id)%>",
+                       true);
+      xhr.setRequestHeader('X-CSRF-Token', '<%= form_authenticity_token %>');
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.send(form);
+    }
+  }
+
+  //Creating form for photos
+  function CreatePhotoForm(photos, outputPlace, button) {
+    var output = document.getElementById(outputPlace);
+
+    //Clear output
+    while (output.firstChild) {
+      output.removeChild(output.firstChild);
+    }
+
+    var i2=0;
+    var photos2=[];
+    for (var i=0; i<photos.length; i++) {
+      if (photos[i]['id'] != "None") {
+        photos2[i2] = photos[i];
+        i2++;
+        var div = document.createElement("div");
+        div.className = "upload_block";
+        div.id = "upload_block_id_" + photos[i]['id'];
+        div.innerHTML = "<div class = 'upload_picture_block'>" +
+                        "<img src='/" +
+                        "<%= I18n.locale %>" +
+                        "/photo/" + photos[i]['id'] + "/resized/get'" +
+                        " class = 'upload_picture' " +
+                        "id = 'photo_id_" + photos[i]['id'] + "'>" +
+                        "</img></div>" +
+                        "<div class = 'upload_picture_rotation_block'>" +
+                        "<button class = 'rotation_button_left' " + 
+                        "id = 'rotation_left_id_" + photos[i]['id'] + "'>" +
+//                        "turn left" +
+                        "</button>" +
+
+                        "<button class = 'delete_button' " + 
+                        "id = 'delete_id_" + photos[i]['id'] + "'>" +
+//                        "delete" +
+                        "</button>" +
+
+                        "<button class = 'rotation_button_right' " + 
+                        "id = 'rotation_right_id_" + photos[i]['id'] + "'>" +
+//                        "turn right" +
+                        "</button>" +
+                        "</div>" +
+                        "<div class = 'upload_picture_information_block'>" +
+                        "<p class = 'upload_picture_information' " +
+                        "id = 'information_id_" + photos[i]['id'] + "'>" + 
+                        "<%= t(:photo_name) %>" +
+                        "</p>" +
+                        "</div>" +
+                        "<div class = 'upload_picture_text_area_block'>" +
+                        "<textarea class = 'upload_picture_text_area' " +
+                        "id = 'id_" + photos[i]['id'] + "'>" +
+                        "</textarea>" +
+                        "</div>";
+        output.appendChild(div);
+      }
+    }
+    if (photos.length != photos2.length) {
+        var div2 = document.createElement("div");
+        div2.className = "upload_block";
+        div2.innerHTML = "<div class = 'upload_picture_errors'>" +
+                         "<%= t(:uploading_errors) %>" +
+                         "</div>";
+        output.appendChild(div2);
+    }
+    button.className = "upload_picture_button";
+    button.innerHTML = "<%= t(:confirm) %>";
+    output.appendChild(button);
+    return photos2;
+  }
+
+  function SendFilledForms(photos, xhrResponse) {
+    var xhr = [];
+    for (var i=0; i<photos.length; i++) {
+      xhr[i] = new XMLHttpRequest();
+      var form = new FormData();
+      form.append("photo[name]", document.
+                                 getElementById("id_" + photos[i]['id']).value);
+      xhr[i].open("PATCH", "/<%= I18n.locale %>/photos/" + photos[i]['id'], true);
+      xhr[i].setRequestHeader('X-CSRF-Token', '<%= form_authenticity_token %>');
+      xhr[i].setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr[i].send(form);
+      xhr[i].onload = function() {
+        var status = document.getElementById("information_id_" +
+                                             photos[xhr.indexOf(this)]['id']);
+        var data = JSON.parse(this.responseText);
+        xhrResponse[xhr.indexOf(this)] = data;
+        if (data.status == "BAD") {
+          //status.style.color = "red";
+          status.innerHTML = "";
+          for (i=0; i<data.errors.length; i++) {
+            var div = document.createElement("div");
+            var alert = document.createTextNode(data.errors[i]);
+            div.className = 'AlertInformation';
+            div.appendChild(alert);
+            status.appendChild(div);
+          }
+        }
+        else if (data.status == "OK") {
+          status.style.color = "green";
+          status.innerHTML = "OK";
+        }
+      }
+    }
+  }
+</script>

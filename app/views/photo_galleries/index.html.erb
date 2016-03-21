@@ -1,0 +1,55 @@
+<div class = "title_block">
+  <%= link_to t(:create_gallery), new_photo_gallery_path,
+                                  class: "title_link_small" %>
+</div>
+
+<div class="numbered">
+</div>
+
+<% if @photo_gallery %>
+  <% @photo_gallery.each do |gallery| %>
+    <% if gallery.humans.exists?(current_human.id) ||
+          current_human == gallery.human ||
+          current_human.admin? %>
+
+      <div class = "photo_gallery_wrapper">
+        <div class = "photo_gallery_cover_block">
+          <%= link_to(image_tag(get_photo_path(gallery.cover, 'resized'),
+                                class: 'photo_gallery_cover'),
+                      photo_gallery_photos_path(gallery.id)) %>
+        </div>
+
+        <div class = "photo_gallery_description_block">
+          <p class = "photo_gallery_description">
+            <%= gallery.description %>
+          </p>
+        </div>
+
+        <% if current_human == gallery.human || current_human.admin? %>
+          <div class = "photo_gallery_edit">
+            <%= link_to t(:edit), edit_photo_gallery_path(gallery.id),
+                                  class: "small_link" %>
+          </div>
+
+          <div class = "photo_gallery_delete">
+            <%= link_to t(:delete), photo_gallery_path(gallery.id),
+                                    method: :delete,
+                                    data: { confirm: t(:delete_confirmation) },
+                                    class: "small_link" %>
+          </div>
+
+
+
+          <div class = "photo_gallery_edit">
+            <%= link_to t(:access),
+                        new_photo_gallery_permission_path(gallery.id),
+                        class: "small_link" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+<script type="text/javascript">
+  PreLoader("photo_gallery_cover");
+</script>

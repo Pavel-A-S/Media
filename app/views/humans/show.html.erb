@@ -1,0 +1,24 @@
+<div class = "human_center_align">
+  <div class = "human_wrapper">
+
+    <div class = "human_avatar_block">
+      <%= image_tag avatar_path(@human.id), class: "human_avatar" %>
+    </div>
+
+    <div class = "human_name_block">
+      <p class = "human_name">
+        <%= @human.name %>
+        <br>
+        <%= @human.email %>
+      </p>
+    </div>
+
+    <% if current_human == @human || current_human.admin? %>
+      <div class = "human_edit">
+        <%= link_to t(:edit), edit_human_path(@human),
+                              class: "small_link" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

@@ -1,0 +1,3 @@
+# PhotosHelper
+module PhotosHelper
+end

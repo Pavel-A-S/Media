@@ -1,0 +1,9 @@
+<%= form_for(:link_resource, url: create_link_path(@photo_gallery.id)) do |f| %>
+  <%= render partial: 'shared/form_errors',
+             locals: { object: @photo } %>
+
+  <%= f.label :description, t(:description), class: "label" %>
+  <%= f.text_field :description, class: "text_field" %>
+  <%= f.submit t(:create), class: "button_submit" %>
+
+<% end %>

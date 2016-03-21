@@ -1,0 +1,105 @@
+<div class = "title_block">
+
+  <div class = "title_text_block">
+    <p class = "title_text">
+      <%= link_to "#{@photo_gallery.description}",
+                  photo_gallery_photos_path(@photo_gallery.id),
+                  class: "title_link" %>
+    </p>
+  </div>
+
+  <div class = "title_human_block">
+    <%= link_to "(#{@human.name})", @human, class: "small_link" %>
+  </div>
+
+</div>
+
+<div class = "photo_center_align">
+
+  <div class = "photo_block" id = "photo_block_id">
+  </div>
+
+  <div class = "photo_description">
+    <%= @photo.name %>
+  </div>
+
+  <% if current_human == @photo.photo_gallery.human || current_human.admin? %>
+    <div class = "photo_edit">
+      <%= link_to t(:edit), edit_photo_path(@photo.id),
+                            class: "small_link" %>
+    </div>
+
+    <div class = "photo_delete">
+      <%= link_to t(:delete), photo_path(@photo.id),
+                              method: :delete,
+                              data: { confirm: t(:delete_confirmation) },
+                              class: "small_link" %>
+    </div>
+  <% end %>
+
+</div>
+
+<%= form_for(@comment, url: photo_comments_path(@photo.id),
+                       html: {class: "comment_form"}) do |f| %>
+
+  <%= f.label :text, t(:write_comment), class: "comment_label" %>
+
+  <%= f.submit t(:send), class: "comment_button_submit",
+                         id: "comment_button_submit" %>
+
+  <div class = "comment_text_area_wrapper">
+    <%= f.text_area :text, class: "comment_text_area",
+                           id: "comment_text_area" %>
+  </div>
+
+<% end %>
+
+<% if @comments %>
+  <% @comments.each do |comment| %>
+    <div class = "comments_center_align">
+
+      <div class = "comments_human_block">
+
+        <div class = "comments_avatar_block">
+          <%= image_tag avatar_path(comment.human.id),
+                        class: "comments_avatar" %>
+        </div>
+
+        <div class = "human_name">
+          <%= comment.human.name %>
+        </div>
+
+        <div class = "comments_date">
+          <%= comment.created_at.strftime("%H:%M:%S %d.%m.%Y") %>
+        </div>
+
+        <% if current_human == comment.human || current_human.admin? %>
+          <div class = "comments_delete">
+            <%= link_to t(:delete), comment_path(comment.id),
+                                    method: :delete,
+                                    data: { confirm: t(:delete_confirmation) },
+                                    class: "small_link" %>
+          </div>
+        <% end %>
+
+      </div>
+
+      <div class = "comments_text_block">
+        <div class = "comments_text">
+          <%= comment.text %>
+        </div>
+      </div>
+
+    </div>
+  <% end %>
+<% end %>
+<a name='bottom'> </a>
+<script type="text/javascript">
+
+// These functions live in assets
+  EnterSubmitComments();
+  FullPhotoPreLoader("<%= get_photo_path(@photo.id, 'full') %>",
+                     "photo_block_id",
+                     "<%= t(:image_preload) %>");
+
+</script>
