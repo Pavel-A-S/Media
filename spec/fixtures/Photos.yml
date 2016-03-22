@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+good_photo:
+  id: 71
+  name: 'good photo'
+  path: "/spec/fixtures/files/photo.png"
+  photo_gallery_id: 17
+
+good_photo_2:
+  id: 73
+  name: 'good photo'
+  path: "/spec/fixtures/files/photo.png"
+  photo_gallery_id: 17

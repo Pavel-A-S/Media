@@ -42,6 +42,11 @@ gem 'link_thumbnailer'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
+  # For tests
+  gem "rspec-rails"
+
+  # For tests
+  gem 'capybara'
 
   # For model structure diagram
   gem 'rails-erd'

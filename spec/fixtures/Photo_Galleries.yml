@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+good_gallery:
+  id: 17
+  description: "good gallery"
+  cover: "/test/fixtures/files/cover.png"
+  human_id: 23
+
+bad_gallery:
+  id: 13
+  description: "bad gallery"
+  cover: "/test/fixtures/files/cover.png"
+  human_id: 25
